@@ -1,0 +1,9 @@
+POSTGRES:
+============================
+USER: localhost
+PASS: kabala_script
+
+DJANGO ADMIN
+============================
+USER: MAMMOFT_ADMIN
+PASS: IDONTKNOW

@@ -1,0 +1,114 @@
+
+{% load static %}
+{% load staticfiles %}
+{%block change_password%}
+<head>
+<!-- CSS Style -->
+    <link rel="stylesheet" type="text/css" href="/static/stylesheet/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/stylesheet/font-awesome.css" media="all">
+    <link rel="stylesheet" type="text/css" href="/static/stylesheet/jquery.mobile-menu.css">
+    <link rel="stylesheet" type="text/css" href="/static/stylesheet/style.css" media="all">
+    <link rel="stylesheet" type="text/css" href="/static/stylesheet/responsive.css" media="all">
+    <link rel="stylesheet" type="text/css" href="/static/stylesheet/google.css" media="all">
+    <link rel="stylesheet" type="text/css" href="/static/stylesheet/google1.css" media="all">
+    <title>Mammoft | Cambiar contraseña</title>
+</head>
+
+<body>
+
+
+<div class="main-container col1-layout wow bounceInUp animated animated animated animated" style="visibility: visible;">
+  <div class="main">
+    <div class="account-login container" style="margin-top: 5%;">
+  <!--page-title-->
+      <div style="text-align: center;"><br />
+        <img src="/static/identidad_corporativa/mammoft-06.png" style="width: 50px; height: 60px;"> <h1> Mammoft</h1>
+      </div>
+
+      <form action="" method="POST" id="login-form">{%csrf_token%}
+        <fieldset class="col2-set">
+          <div class="col-1 new-users"><strong>Cambio de Password</strong>
+            <div class="content">
+              {% if not hash and not can_change%}
+                <p>Se enviará un codigo de validacion al correo administrador de Mammoft para cambiar tu contraseña</p>
+                <p>Solicita al administrador que te provea del codigo de validación</p>
+              {% endif %}
+
+              {% if hash %}
+                <br />
+                <strong>Hemos enviado correctamente el codigo de validación al administrador</strong>
+              {% endif %}
+              {% if can_change %}
+                <br />
+                <strong>Ahora puedes cambiar tu password</strong>
+              {% endif %}
+                <div class="buttons-set"></div>
+            </div>
+          </div>
+
+          <div class="col-2 registered-users">
+             <strong>Datos Para Restaurar Password</strong>
+                <div class="content">
+                    <p style="color:red;">{{msg}}</p>
+                    <p></p>
+                    <ul class="form-list">
+                      {% if user_send == False %}
+                        <li>
+                            <label for="email">Usuario<em class="required">*</em></label>
+                            <div class="input-box">
+                                <input name="user" value="" id="user" class="input-text required-entry validate-password" title="Usuario" type="text">
+                            </div>
+                        </li>
+                      {% endif %}
+
+                        {% if usuario and not can_change %}
+                        <li>
+                            <label for="pass">Codigo De Validacion<em class="required">*</em></label>
+                            <div class="input-box">
+                                <input name="cod_validate" class="input-text required-entry validate-password" id="cod_validate" value="" title="Codigo Validación" type="text">
+                            </div>
+                        </li>
+                        {% endif %}
+
+                         {% if can_change %}
+                         <li>
+                             <label for="pass">Password:<em class="required">*</em></label>
+                             <div class="input-box">
+                                 <!--Aqui es donde cambie nombres de variable y todo para que me devuelva al POST-->
+                                 <input name="pone" class="input-text required-entry validate-password" id="pone" value="" title="Password" type="password">
+                             </div>
+                         </li>
+                         <li>
+                             <label for="pass">Repita el password:<em class="required">*</em></label>
+                             <div class="input-box">
+                               <!--De la misma forma, en el View.py se espera que recibirlas, pero no las envia-->
+                                 <input name="ptwo" class="input-text required-entry validate-password" id="ptwo" value="" title="Repita password" type="password">
+                             </div>
+                         </li>
+                          {% endif %}
+                  </ul>
+                  <div class="remember-me-popup"></div>
+                  <p class="required">* Capos Requeridos</p>
+                  <div class="buttons-set">
+                    {% if can_change %}
+                    <button type="submit" class="button login" title="Login" name="update_pass" id="update_pass"><span>Actualizar Password</span></button>
+                    {% endif %}
+
+                    {% if usuario and not can_change %}
+                    <button type="submit" class="button login" title="Login" name="update_cod" id="update_cod"><span>Comprobar codigo de Validación</span></button>
+                    {% endif %}
+
+                    {% if usuario == None %}
+                    <button type="submit" class="button login" title="Login" name="update_Cambio_val" id="update_Cambio_val"><span>Obtener Codigo de Validación</span></button>
+                    {% endif %}
+                  </div> <!--buttons-set-->
+                </div> <!--content-->
+          </div> <!--col-2 registered-users-->
+        </fieldset> <!--col2-set-->
+      </form>
+    </div> <!--account-login-->
+  </div><!--main-container-->
+</div>
+</body>
+
+{% endblock%}

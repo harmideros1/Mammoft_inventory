@@ -1,0 +1,9 @@
+{% extends "admin/base.html" %}
+{% load staticfiles %}
+{% block title %}{{ title }} | Mammoft{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><img src="{% static 'identidad_corporativa/mammoft-09.png' %}" style="width: 23px; height: 25px; margin-left:100; margin-top:100;"><a href="{% url 'admin:index' %}">   MAMMOFT &copy; </a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

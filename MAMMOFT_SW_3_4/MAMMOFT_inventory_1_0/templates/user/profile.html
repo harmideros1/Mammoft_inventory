@@ -1,0 +1,179 @@
+{% extends "base/base.html" %}
+{% load staticfiles %}
+{% block title %}Mammoft | Perfil {% endblock %}
+
+{% block content %}
+<div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                  {% if editing %}
+                  <h2>Editando a: {{request.user.first_name}} {{request.user.last_name}}</h2>
+                  {% else %}
+                    <h2>Perfil de usuario</h2>
+                  {% endif %}
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+
+                  {% if editing %}
+
+                  <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+                    <div class="profile_img">
+                      <div id="crop-avatar">
+                        <!-- Current avatar -->
+                        <img class="img-responsive avatar-view" src="{{request.user.u_hash.avatar}}" alt="Avatar" title="Change the avatar">
+                      </div>
+                    </div>
+                  </div>
+
+                  <form action="" method="POST" enctype="multipart/form-data">{%csrf_token%}
+                    <label class="control-label col-md-2 col-sm-3 col-xs-3">Imagen</label>
+                    <input class="btn btn-default" type="file" name="picture" accept="image/*">
+
+                    <label class="control-label col-md-2 col-sm-3 col-xs-3">Fecha de nacimiento</label>
+                    <fieldset>
+                      <div class="control-group">
+                        <div class="controls">
+
+                          <div class="col-md-6 input-group date mammoft-date">
+                            <input type="text" class="form-control" name="calendar" placeholder="MM/DD/AAAA" value="{{request.user.u_hash.f_nacimiento | date:'d/m/Y'}}" ><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                          </div>
+
+                          <script src="{% static 'js/app.js' %}" charset="utf-8"></script>
+
+                          <script src="{% static 'js/app.js' %}" charset="utf-8"></script>
+
+                        </div>
+                      </div>
+
+                    </fieldset>
+
+                    <label class="control-label col-md-2 col-sm-3 col-xs-3">Sexo: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div id="gender" class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                          <input type="radio" name="gender" value="Hombre" data-parsley-multiple="gender" data-parsley-id="12"> &nbsp; Hombre &nbsp;
+                        </label>
+                        <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                          <input type="radio" name="gender" value="Mujer" data-parsley-multiple="gender"> Mujer
+                        </label>
+                      </div>
+                    </div>
+
+                    <br><br>
+                    <label class="control-label col-md-2 col-sm-3 col-xs-3">Cargo: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                        <input type="text" class="form-control has-feedback-left" id="inputSuccess2" name="cargo" placeholder="{{request.user.u_hash.cargo}}">
+                        <span class="fa fa-briefcase form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+
+                    <br><br>
+                    <label class="control-label col-md-2 col-sm-3 col-xs-3">Dirección: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                        <input type="text" class="form-control has-feedback-left" id="inputSuccess2" name="direccion" placeholder="{{request.user.u_hash.direccion}}">
+                        <span class="fa fa-map-marker form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+
+                    <br><br><br><br><br>&nbsp;&nbsp;
+                    <button class="btn btn-success" type="submit"  name="save_profile" ><i class="fa fa-check m-right-xs"></i>Guardar</button>
+                  </form>
+
+
+                  {% else %}
+                  <div class="x_content">
+                    <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+                      <div class="profile_img">
+                        <div id="crop-avatar">
+                          <!-- Current avatar -->
+                          <img class="img-responsive avatar-view" src="{{request.user.u_hash.avatar}}" alt="Avatar" title="Change the avatar">
+                        </div>
+                      </div>
+                      <h3>{{request.user.first_name}} {{request.user.last_name}}</h3>
+
+                      <ul class="list-unstyled user_data">
+                        <li class="m-top-xs">
+                          <i class="fa fa-dashboard user-profile-icon"></i>
+                          <a href="http://www.kimlabs.com/profile/" target="_blank">{{ request.user.u_hash.edad }}  años</a>
+                        </li>
+                        <li>
+                          <div class="m-top-xs">
+                            <i class="fa fa-birthday-cake user-profile-icon"></i>
+                            <a href="http://www.kimlabs.com/profile/" target="_blank">{{ request.user.u_hash.f_nacimiento | date:"F j, Y" }}</a>
+                          </div>
+                        </li>
+                        <li class="m-top-xs">
+                          <i class="fa fa-male user-profile-icon"></i>
+                          <a href="http://www.kimlabs.com/profile/" target="_blank">{{ request.user.u_hash.sexo }}</a>
+                        </li>
+                        <li>
+                          <i class="fa fa-briefcase user-profile-icon"></i> {{ request.user.u_hash.cargo }}
+                        </li>
+                        <li><i class="fa fa-map-marker user-profile-icon"></i> {{ request.user.u_hash.direccion }}</li>
+                      </ul>
+                      <form action="" method="POST">{%csrf_token%}
+                        <button class="btn btn-success" type="submit"  name="edit_profile" ><i class="fa fa-edit m-right-xs"></i>Editar perfil</button>
+                      </form>
+
+                      <br>
+
+                      <!-- start skills -->
+                      <h4>Skills</h4>
+                      <ul class="list-unstyled user_data">
+                        <li>
+                          <p>Web Applications</p>
+                          <div class="progress progress_sm">
+                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50" style="width: 50%;" aria-valuenow="49"></div>
+                          </div>
+                        </li>
+                        <li>
+                          <p>Website Design</p>
+                          <div class="progress progress_sm">
+                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="70" style="width: 70%;" aria-valuenow="69"></div>
+                          </div>
+                        </li>
+                        <li>
+                          <p>Automation &amp; Testing</p>
+                          <div class="progress progress_sm">
+                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="30" style="width: 30%;" aria-valuenow="29"></div>
+                          </div>
+                        </li>
+                        <li>
+                          <p>UI / UX</p>
+                          <div class="progress progress_sm">
+                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50" style="width: 50%;" aria-valuenow="49"></div>
+                          </div>
+                        </li>
+                      </ul>
+                      <!-- end of skills -->
+
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-12">
+
+                      <div class="profile_title">
+                        <div class="col-md-6">
+                          <h2>User Activity Report</h2>
+                        </div>
+                        <div class="col-md-6">
+                          <div id="reportrange" class="pull-right" style="margin-top: 5px; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #E6E9ED">
+                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                            <span>February 22, 2017 - March 23, 2017</span> <b class="caret"></b>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- start of user-activity-graph -->
+                      <div id="graph_bar" style="width: 100%; height: 280px; position: relative; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><svg height="280" version="1.1" width="750" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative; left: -0.75px;"><desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël @@VERSION</desc><defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs><text x="43.5" y="211.985167404" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.000792404000009">0</tspan></text><path fill="none" stroke="#aaaaaa" d="M56,211.985167404H725" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="43.5" y="165.238875553" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.004500553000014">750</tspan></text><path fill="none" stroke="#aaaaaa" d="M56,165.238875553H725" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="43.5" y="118.492583702" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.008208702000005">1,500</tspan></text><path fill="none" stroke="#aaaaaa" d="M56,118.492583702H725" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="43.5" y="71.746291851" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.011916850999995">2,250</tspan></text><path fill="none" stroke="#aaaaaa" d="M56,71.746291851H725" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="43.5" y="25" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4">3,000</tspan></text><path fill="none" stroke="#aaaaaa" d="M56,25H725" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="691.55" y="224.485167404" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(0.8192,-0.5736,0.5736,0.8192,-16.3005,452.1638)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.000792404000009">Other</tspan></text><text x="624.65" y="224.485167404" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(0.8192,-0.5736,0.5736,0.8192,-50.1984,428.701)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.000792404000009">iPhone 6S Plus</tspan></text><text x="557.75" y="224.485167404" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(0.8192,-0.5736,0.5736,0.8192,-51.2368,382.5908)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.000792404000009">iPhone 6S</tspan></text><text x="490.85" y="224.485167404" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(0.8192,-0.5736,0.5736,0.8192,-71.1186,349.6639)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.000792404000009">iPhone 6 Plus</tspan></text><text x="423.95" y="224.485167404" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(0.8192,-0.5736,0.5736,0.8192,-72.1599,303.5448)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.000792404000009">iPhone 6</tspan></text><text x="357.05" y="224.485167404" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(0.8192,-0.5736,0.5736,0.8192,-87.5336,267.4722)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.000792404000009">iPhone 5S</tspan></text><text x="290.15" y="224.485167404" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(0.8192,-0.5736,0.5736,0.8192,-96.3568,226.8021)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.000792404000009">iPhone 5</tspan></text><text x="223.25" y="224.485167404" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(0.8192,-0.5736,0.5736,0.8192,-115.4167,193.3106)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.000792404000009">iPhone 3GS</tspan></text><text x="156.35" y="224.485167404" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(0.8192,-0.5736,0.5736,0.8192,-123.8303,152.3536)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.000792404000009">iPhone 4S</tspan></text><text x="89.45" y="224.485167404" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(0.8192,-0.5736,0.5736,0.8192,-132.6536,111.6835)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.000792404000009">iPhone 4</tspan></text><rect x="64.3625" y="188.30037953282667" width="50.175000000000004" height="23.68478787117334" rx="0" ry="0" fill="#26b99a" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="131.26250000000002" y="171.16007252079334" width="50.175000000000004" height="40.825094883206674" rx="0" ry="0" fill="#26b99a" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="198.16250000000002" y="194.84486039196668" width="50.175000000000004" height="17.140307012033333" rx="0" ry="0" fill="#26b99a" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="265.06250000000006" y="114.06726807343867" width="50.175000000000004" height="97.91789933056134" rx="0" ry="0" fill="#26b99a" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="331.96250000000003" y="171.16007252079334" width="50.175000000000004" height="40.825094883206674" rx="0" ry="0" fill="#26b99a" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="398.8625" y="77.729817207928" width="50.175000000000004" height="134.25535019607202" rx="0" ry="0" fill="#26b99a" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="465.76250000000005" y="140.68149023394133" width="50.175000000000004" height="71.30367717005868" rx="0" ry="0" fill="#26b99a" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="532.6625" y="64.20455676570532" width="50.175000000000004" height="147.7806106382947" rx="0" ry="0" fill="#26b99a" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="599.5625" y="120.30010698690533" width="50.175000000000004" height="91.68506041709468" rx="0" ry="0" fill="#26b99a" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="666.4625" y="126.532945900372" width="50.175000000000004" height="85.45222150362801" rx="0" ry="0" fill="#26b99a" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect></svg><div class="morris-hover morris-default-style" style="left: 36.45px; top: 111px; display: none;"><div class="morris-hover-row-label">iPhone 4</div><div class="morris-hover-point" style="color: #26B99A">
+  Geekbench:
+  380
+</div></div></div>
+
+{% endif %}
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+{% endblock %}
